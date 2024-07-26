@@ -2,23 +2,27 @@
 
   <div id="chat">
     <h1 class="titulo">
-      Seja bem vindo a AGWeb<span v-if="nameRegistered">, {{ name }}</span>!
+      Seja bem vindo a AGWeb<span v-if="cpfRegistered">, {{ name }}</span>!
     </h1>
     <p>
       <i v-if="isConnected" class="bi bi-circle-fill text-success"></i>
       <i v-else class="bi bi-circle-fill text-danger">Desconectado</i>
       {{ statusString }}
     </p> <!-- Adicionado ícone de status -->
-    <div v-if="!nameRegistered">
-      <input @keyup.enter="registerName" v-model="name" placeholder="Digite seu nome" />
-      <button @click="registerName">Entrar</button>
+    <div v-if="!cpfRegistered">
+      <input @keyup.enter="registerCPF" v-model="cpf" placeholder="Digite seu CPF" />
+      <div v-if="!nameRegistered">
+        <input @keyup.enter="registerName" v-model="name" placeholder="Digite seu Nome" />
+      </div>
+      <button @click="registerCPF">Entrar</button>
     </div>
+
     <!--
     <div v-if="nameRegistered && !activeConversation && isConnected">
       <button @click="createOrJoinConversation">Iniciar Conversa!</button>
     </div> -->
 
-    <ConversationComponent v-if="activeConversation" :active-conversation="activeConversation" :name="name" />
+    <ConversationComponent v-if="activeConversation" :active-conversation="activeConversation" :cpf="cpf" />
   </div>
 </template>
 
@@ -32,6 +36,8 @@ export default {
     return {
       statusString: "",
       activeConversation: null,
+      cpf: "",
+      cpfRegistered: false,
       name: "",
       nameRegistered: false,
       isConnected: false,
@@ -41,7 +47,7 @@ export default {
     async initConversationsClient() {
       try {
         this.statusString = "Connecting to Twilio…";
-        const token = await this.getToken(this.name);
+        const token = await this.getToken(this.cpf);
         this.conversationsClient = new ConversationsClient(token);
 
         this.conversationsClient.on("connectionStateChanged", (state) => {
@@ -49,7 +55,7 @@ export default {
             case "connected":
               this.statusString = "Você está conectado";
               this.isConnected = true;
-              this.createOrJoinConversation();      //Chamando a função assim que ficar conectado para evitar mais uma confirmação
+              this.createOrJoinConversation();
               break;
             case "disconnecting":
               this.statusString = "Desconectando...";
@@ -71,6 +77,14 @@ export default {
       }
     },
 
+    async registerCPF() {
+      try {
+        this.cpfRegistered = true;
+        await this.initConversationsClient();
+      } catch (error) {
+        console.error("Erro ao registrar o CPF", error);
+      }
+    },
     async registerName() {
       try {
         this.nameRegistered = true;
@@ -82,19 +96,21 @@ export default {
 
     async createOrJoinConversation() {
       try {
-        let conversation = await this.conversationsClient.getConversationByUniqueName(this.name);
+        let conversation = await this.conversationsClient.getConversationByUniqueName(this.cpf);
         this.activeConversation = conversation;
         await this.addParticipantToConversation(conversation.sid, "AGWeb");
+        await this.addParticipantToConversation(conversation.sid, this.cpf);
         await this.addParticipantToConversation(conversation.sid, this.name);
       } catch (error) {
         if (error.message.includes("Not Found")) {
           try {
             let newConversation = await this.conversationsClient.createConversation({
-              uniqueName: this.name,
+              uniqueName: this.cpf,
             });
             await newConversation.join();
             this.activeConversation = newConversation;
             await this.addParticipantToConversation(newConversation.sid, "AGWeb");
+            await this.addParticipantToConversation(newConversation.sid, this.cpf);
             await this.addParticipantToConversation(newConversation.sid, this.name);
           } catch (createError) {
             console.error("Erro ao criar a conversa", createError);

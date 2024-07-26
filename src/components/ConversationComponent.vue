@@ -2,22 +2,23 @@
   <div id="conversation">
     <div class="conversation-container">
       <div v-for="message in messages" :key="message.sid" class="bubble-container"
-        :class="{ myMessage: message.author === name }">
+        :class="{ myMessage: message.author === cpf }">
         <div class="bubble">
-          <div class="name">{{ message.author }}:</div>
-          <div class="message" v-html="formatMessage(message.body)"></div>
+          <div class="name">{{ message.author === 'system' ? 'Teddy AGWeb' : message.author }}:
         </div>
+        <div class="message" v-html="formatMessage(message.body)"></div>
       </div>
     </div>
-    <div class="input-container">
-      <!--Mudança de input para textarea, além disso, o evento adjustTextareaHeight foi adicionado para garantir
+  </div>
+  <div class="input-container">
+    <!--Mudança de input para textarea, além disso, o evento adjustTextareaHeight foi adicionado para garantir
       que a altura do textarea seja ajustada automaticamente conforme o usuário digita as mensagens -->
-      <textarea v-model="messageText" @keydown.enter="handleEnter" @input="adjustTextareaHeight" class="form-control"
-        placeholder="Digite sua mensagem"></textarea>
-      <button @click="sendMessage" :disabled="isSending" class="btn btn-success">
-        <i class="bi bi-send"></i>
-      </button>
-    </div>
+    <textarea v-model="messageText" @keydown.enter="handleEnter" @input="adjustTextareaHeight" class="form-control"
+      placeholder="Digite sua mensagem"></textarea>
+    <button @click="sendMessage" :disabled="isSending" class="btn btn-success">
+      <i class="bi bi-send"></i>
+    </button>
+  </div>
   </div>
 </template>
 
@@ -28,7 +29,7 @@ export default {
       type: Object,
       required: true,
     },
-    name: {
+    cpf: {
       type: String,
       required: true,
     },
@@ -52,10 +53,10 @@ export default {
     textarea.addEventListener('input', this.adjustTextareaHeight);
   },
   methods: {
-    formatMessage(message){
+    formatMessage(message) {
       if (message.includes('\n')) {
         const items = message.split('\n');
-        return `<ul>${items.map(item => `<li>${item}</li>`).join('')}</ul>`;
+        return items.join('<br>')
       }
       return message;
     },
@@ -100,7 +101,7 @@ export default {
           body: JSON.stringify({
             conversationSid: this.activeConversation.sid,
             message: this.messageText,
-            name: this.name
+            cpf: this.cpf
           }),
         });
 
