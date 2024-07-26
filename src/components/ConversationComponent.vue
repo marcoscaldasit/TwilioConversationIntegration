@@ -54,6 +54,7 @@ export default {
   },
   methods: {
     formatMessage(message) {
+    formatMessage(message) {
       if (message.includes('\n')) {
         const items = message.split('\n');
         return items.join('<br>')
@@ -163,6 +164,8 @@ html {
   height: 100%;
   width: 100%;
   max-height: 80vh;
+  min-height: 80vh;
+
   /* Altura máxima para o contêiner */
 }
 
@@ -170,10 +173,9 @@ html {
   margin: 0 auto;
   width: 100%;
   padding: 0 20px;
-  overflow: auto;
   flex: 1;
+  overflow-y: auto;
 }
-
 
 .bubble-container {
   display: flex;

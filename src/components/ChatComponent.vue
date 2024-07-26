@@ -168,6 +168,7 @@ export default {
 @import 'https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css';
 @import 'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css';
 
+
 .titulo {
   font-family: "Encode Sans", Sans-serif;
   font-size: 28px;
