@@ -120,9 +120,7 @@ export default {
       }
 
     },
-
     
-
     async addParticipantToConversation(conversationSid, participantIdentity) {
       try {
         const conversation = await this.conversationsClient.getConversationBySid(conversationSid);
