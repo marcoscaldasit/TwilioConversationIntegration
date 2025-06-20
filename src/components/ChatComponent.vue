@@ -16,12 +16,6 @@
       </div>
       <button @click="registerCPF">Entrar</button>
     </div>
-
-    <!--
-    <div v-if="nameRegistered && !activeConversation && isConnected">
-      <button @click="createOrJoinConversation">Iniciar Conversa!</button>
-    </div> -->
-
     <ConversationComponent v-if="activeConversation" :active-conversation="activeConversation" :cpf="cpf" />
   </div>
 </template>
@@ -85,6 +79,7 @@ export default {
         console.error("Erro ao registrar o CPF", error);
       }
     },
+
     async registerName() {
       try {
         this.nameRegistered = true;
@@ -123,7 +118,10 @@ export default {
       if (!this.activeConversation) {
         console.error("activeConversation not properly initialized.");
       }
+
     },
+
+    
 
     async addParticipantToConversation(conversationSid, participantIdentity) {
       try {
@@ -159,6 +157,9 @@ export default {
     },
   },
 };
+
+
+
 </script>
 
 

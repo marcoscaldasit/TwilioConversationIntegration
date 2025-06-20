@@ -54,7 +54,6 @@ export default {
   },
   methods: {
     formatMessage(message) {
-    formatMessage(message) {
       if (message.includes('\n')) {
         const items = message.split('\n');
         return items.join('<br>')

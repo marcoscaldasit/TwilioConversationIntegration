@@ -122,7 +122,10 @@ app.post('/continue-flow', async (req, res) => {
   }
 });
 
-
+/*Webhook principal, ele é acionado quando o usuário ou a Twilio envia mensagens automática e serve para
+* Registrar o estado da conversa
+* Decidir o fluxo de resposta com base no type da query
+*/ 
 app.post('/twilio-webhook', async (req, res) => {
   const { type } = req.query;
   const { conversationSid, message } = req.body;
