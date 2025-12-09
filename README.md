@@ -11,7 +11,7 @@ Este projeto integra a funcionalidade de conversação do Twilio em uma aplicaç
 
 ## Instalação
 1. Clone este repositório para sua máquina local:
-#### git clone https://github.com/AutoGestaoWeb/TwilioConversationIntegration.git
+#### git clone https://github.com/marcoscaldasit/TwilioConversationIntegration.git
 2. Navegue até o diretório do projeto:
 #### cd TwilioConversationIntegration
 3. Instale as dependências do projeto:
