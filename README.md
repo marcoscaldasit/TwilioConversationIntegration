@@ -32,7 +32,7 @@ Configure as variáveis de ambiente necessárias. Crie um arquivo .env na raiz d
 Para iniciar a aplicação em ambiente de desenvolvimento, execute o comando:
 
 ### npm run serve
-## A aplicação estará disponível em http://localhost:8080.
+## A aplicação estará disponível em xpto.
 
 ## Estrutura do Projeto
 src/: Contém o código-fonte da aplicação.
